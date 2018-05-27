@@ -869,9 +869,11 @@ let s:Perl_PerldocTry              = "module"
 "          NAME:  Perl_perldoc     {{{1
 "   DESCRIPTION:  Perl_perldoc - lookup word under the cursor or ask
 "===============================================================================
-function! Perl_perldoc()
+function! Perl_perldoc(...)
 
-  if( expand("%:p") == s:Perl_PerlModuleList )
+  if a:0 == 1
+    let item = a:1
+  elseif( expand("%:p") == s:Perl_PerlModuleList )
     normal! 0
     let item=expand("<cWORD>")        			" WORD under the cursor
   else
@@ -1203,11 +1205,11 @@ endfunction   " ---------- end of function  Perl_Settings  ----------
 "       RETURNS:
 "===============================================================================
 function! Perl_SyntaxCheck ()
- 
+
 	if !Perl_Check_Interpreter()
 		return
 	endif
-  
+
   exe ":cclose"
   let l:currentbuffer   = bufname("%")
 	let l:fullname        = expand("%:p")
@@ -1227,7 +1229,7 @@ function! Perl_SyntaxCheck ()
 				\%m\ at\ %f\ line\ %l.,
 				\%+A%.%#\ at\ %f\ line\ %l\\,%.%#,
 				\%+C%.%#'
-	silent exe  ':make  '. shellescape (l:fullname) 
+	silent exe  ':make  '. shellescape (l:fullname)
 
 	exe ":botright cwindow"
 	call s:Perl_RestoreGlobalOption('makeprg')
@@ -1321,7 +1323,7 @@ endfunction    " ----------  end of function Perl_Check_Interpreter  ----------
 "       RETURNS:
 "===============================================================================
 function! Perl_Run ()
-  
+
 	if !Perl_Check_Interpreter()
 		return
 	endif
